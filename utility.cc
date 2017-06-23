@@ -48,4 +48,21 @@ namespace Utility {
       return new_vector;
     }
   }
+
+  namespace Vector {
+    std::vector<std::vector<std::string>> zip(std::vector left, std::vector right) {
+      std::vector zipper {};
+
+      if (left.size() == right.size()) {
+        for (int i = 0; i < left.size(); ++i) {
+          std::vector<std::string> teeth_chain {};
+          teeth_chain.push_back(left[i]);
+          teeth_chain.push_back(right[i]);
+          zipper.push_back(teeth_chain)
+        }
+      } else {
+        throw "Size of left and right vectors are not the same";
+      }
+    }
+  } 
 }
