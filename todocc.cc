@@ -24,37 +24,6 @@ int main(int argc, char *argv[]) {
     std::cout << options << std::endl;
   }
 
-  // Define lambdas for each screen
-  std::function<void()> display_show_view = []() { 
-    for (auto const& row : repo.all()) {
-      std::vector<std::string> values;
-      for (auto const& pair : row) {
-        values.push_back(pair.first());
-      }
-
-      std::cout << Utility::Vector::join(values, " ")  << std::endl; 
-    }
-
-    std::cout << options << std::endl;
-  };
-
-  std::function<void()> display_insert_dialog = [](){
-    std::cout << "Enter the follow values\n" << std::endl;
-
-    std::vector<std::string> insert_values;
-    for (std::string header : repo.get_headers()) {
-      // Do some awkward stuff
-      if (header == "id" || header == "created_at" || header == "updated_at"){
-        continue
-      } else {
-        std::string capture;
-        std::cout << header << ":" std::endl;
-        std::getline(std::cin, capture);
-      }
-    }
-  };
-
-
   // Begin loop interface
   while(true) {
     std::string flag;
@@ -64,16 +33,68 @@ int main(int argc, char *argv[]) {
       std::cout << "\nExiting" << std::endl;
       break;
     } else if (flag == "S"){ 
-      display_show_view();
-    } else if (flag == "I") {
+      for (auto const& row : repo.all()) {
+        std::vector<std::string> values;
+        for (auto const& pair : row) {
+          values.push_back(pair.first());
+        }
 
+        std::cout << Utility::Vector::join(values, " ")  << std::endl; 
+      }
 
       std::cout << options << std::endl;
-    } else if (flag == "U") {
+    } else if (flag == "I") {
+      std::cout << "Enter the follow values\n" << std::endl;
+
+      std::vector<std::string> insert_values;
+      for (std::string header : repo.get_headers()) {
+        // Do some awkward stuff
+        if (header == "id" || header == "created_at" || header == "updated_at"){
+          continue
+        } else if (header == "completed"){
+          task[header] = "FALSE";
+        } else {
+          std::string capture;
+          std::cout << header << ":" std::endl;
+          std::getline(std::cin, capture);
+        }
+      }
+
+      std::cout << options << std::endl;
+    } else if (flag == "C") {
+      // mark as complete 
+      std::string identifier;
+      std::cout << "Enter the ID of the task you want to complete" << std::endl;
+      std::cin >> identifier;
+
+      repo.update(identifier, "completed", "TRUE");
+      std::cout << "Updated " << identifier << std::endl;
+
+      std::cout << options << std::endl;
+    } else if (flag == "R"){
+      // rename task 
+      std::string identifier;
+      std::string new_task_name;
+
+      std::cout << "Enter the ID of the task you want to rename." << std::endl;
+      std::cin >> identifier;
+
+      std::cout << "Enter the new name of your task"  << std::endl;
+      std::getline(std::cin, new_task_name);
+
+      repo.update(identifier, "task", new_task_name);
+      std::cout << "Updated " << identifier << " to " << new_task_name << std::endl;
 
       std::cout << options << std::endl;
     } else if (flag == "D") {
+      // delete task
+      std::string identifier;
+      std::cout << "Enter the ID of the task you want to delete" << std::endl;
+      std::cin >> identifier;
 
+      repo.delete_at(identifier);
+
+      std::cout << "Deleted " << identifier  << std::endl;
       std::cout << options << std::endl;
     }
   }
