@@ -9,7 +9,6 @@
 #include "utility.h"
 
 // public
-
 void Repo::Repo(std::string name) {
   std::fstream filestream;
   filename = name + ".csv";
@@ -56,7 +55,8 @@ void Repo::delete_at(std::string identifier) {
     updated_store.push_back(row);
   }
 
-  
+  store = updated_store;
+  persist();
 }
 
 void Repo::insert(std::map<std::string, std::string> task) {
@@ -96,7 +96,6 @@ void Repo::update(std::string identifier, std::string key, std::string new_value
   persist();
 }
 
-
 // private
 void Repo::persist() {
   ofstream file;
@@ -123,5 +122,4 @@ std::string Repo::generate_timestamp() {
   );
 
   return timestamp;
-
 }

@@ -10,13 +10,19 @@ namespace Utility {
   namespace Map {
     std::vector<std::string> to_vector(std::map<std::string, std::string> m) {
       std::vector<std::string> values;
+
+      for (auto const& pair : maphash) {
+        values.push_back(pair.second());
+      }
+
+      return values;
     }
   }
 
   namespace String {
     std::vector<std::string> split(std::string str, char delimiter) {
       std::vector<std::string> fragments = {};
-      
+
       std::string fragment_buffer;
       for (char& c : str) {
         if (c == delimiter) {
@@ -49,7 +55,7 @@ namespace Utility {
 
     std::vector<std::string> trim_all(std::vector<std::string> strs) {
       std::vector<std::string> new_vector = {};
-      
+
       for (std::string str : strs) {
         new_vector.push_back(trim(str));
       }
@@ -88,7 +94,7 @@ namespace Utility {
         throw "Size of left and right vectors are not the same";
       }
     }
-  } 
+  }
 }
 
 #endif
