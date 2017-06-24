@@ -34,6 +34,8 @@ int main(int argc, char *argv[]) {
     std::string flag;
     std::cin >> flag;
 
+    std::cout << std::endl;
+
     if (flag == "E"){
       std::cout << "\nExiting" << std::endl;
       break;
