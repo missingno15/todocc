@@ -85,7 +85,8 @@ std::vector<std::vector<std::string>> Utility::Vector::zip(std::vector<std::stri
     }
 
     return zipper;
-  } else {
-    std::cout << "Size of left was " << left.size() << "and size of right was " << right.size() << std::endl;
   }
+  /* } else { */
+  /*   std::cout << "Size of left was " << left.size() << "and size of right was " << right.size() << std::endl; */
+  /* } */
 }
