@@ -4,17 +4,26 @@
 #include <map>
 #include "repo.h"
 
-void Repo::Repo(std::string filename) {
-  fstream file(filename, ios::in | ios::out);
-  std::string header_string;
+void Repo::Repo(std::string name) {
+  std::fstream filestream;
+  std::string filename = name + ".csv";
+  
+  // hard code these headers for now
+  headers = {
+    "id",
+    "completed",
+    "task",
+    "created_at",
+    "updated_at"
+  };
 
-  if (file) {
-    std::getline(file, header_string, "\n");
+  filestream.open((filename + ".csv"), std::ios::in);
 
-    headers = Utility::String::trim_all(
-      Utility::String::split(header_string, ',')
-    );
-
+  if (file.fail()) {
+    // Create file if it doesn't exist
+    filestream.open(filename, std::ios::out);
+    filestream.close();
+  } else {
     while(file) {
       std::string row_string;
       std::map<std::string, std::string> datum;
@@ -27,7 +36,8 @@ void Repo::Repo(std::string filename) {
 
       for (std::vector<std::string> teeth_chain : row_value) {
         std::string key = teeth_chain.front();
-        std::string value = teeth_chain.back(); datum[key] = value;
+        std::string value = teeth_chain.back();
+        datum[key] = value;
       }
 
       store.push_back(datum);
@@ -46,6 +56,10 @@ std::map<std::string, std::string> Repo::find(std::string identifier) {
       return store[i]["id"];
     }    
   }
+}
+
+std::vector<std::string> Repo::get_headers() {
+  return headers;
 }
 
 void Repo::update(std::string identifier, std::string key, std::string new_value) {

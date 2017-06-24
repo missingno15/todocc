@@ -7,11 +7,12 @@ class Repo{
 
     // attributes
     std::vector<std::map<std::string, std::string>> store;
-    std::vector<std::string> headers;
+    std::vector<std::string> headers const;
 
     // methods
     std::vector<std::map<std::string, std::string>> all();
     std::map<std::string, std::string> find(std::string);
-    void update(std::string, std::string, std::string) {
+    void update(std::string, std::string, std::string);
+    std::vector<std::string> get_headers();
 };
 #endif
