@@ -104,6 +104,7 @@ int main(int argc, char *argv[]) {
       }
 
       std::cout << "Enter the new name of your task"  << std::endl;
+      std::cin.ignore();
       std::getline(std::cin, new_task_name);
 
       repo.update(identifier, "task", new_task_name);
