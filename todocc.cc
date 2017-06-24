@@ -1,3 +1,4 @@
+#include <numeric>
 #include <iostream>
 
 int main(int argc, char *argv[]) {
@@ -14,19 +15,27 @@ int main(int argc, char *argv[]) {
   std::cout << "Course Project\n" << std::endl;
   if(repo.all().empty()) {
     std::cout << "No tasks created yet for " << filename << ". Press I to start." << std::endl;
+  } else {
+    
   }
   
 
   // Begin loop interface
-  // Remember that its like a controller and only directs the program flow
   while(true) {
+    std::string flag;
+    std::cin >> flag;
 
-    
-
-    
-
-    if
-
+    if (flag == "E"){
+    } else if (flag == "I") {
+      menu.display_insert_dialog();
+    } else if (flag == "U") {
+      std::string id;
+      std::cout << "Enter the id of the item you want to update:" << std::endl;
+      std::cin >> id;
+      menu.display_update_dialog(id);
+    } else if (flag == "D") {
+      menu.display_dialog("insert");
+    }
   }
 
   return 0;
