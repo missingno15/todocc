@@ -3,23 +3,17 @@
 #include <vector>
 #include <numeric>
 
+#ifndef UTILITY_H
+#define UTILITY_H value
+
 namespace Utility {
-  namespace String {
-    std::string join(std::vector<std::string> string_vector, std::string delimiter) {
-      std::string result;
-      for (int i = 0; i < string_vector.size(); ++i) {
-        if (i == 0) {
-          result += string_vector[i];
-        } else {
-          result += " ";
-          result += delimiter;
-          result += string_vector[i];
-        }
-      }
-
-      return result;
+  namespace Map {
+    std::vector<std::string> to_vector(std::map<std::string, std::string> m) {
+      std::vector<std::string> values;
     }
+  }
 
+  namespace String {
     std::vector<std::string> split(std::string str, char delimiter) {
       std::vector<std::string> fragments = {};
       
@@ -65,6 +59,21 @@ namespace Utility {
   }
 
   namespace Vector {
+    std::string join(std::vector<std::string> string_vector, std::string delimiter) {
+      std::string result;
+      for (int i = 0; i < string_vector.size(); ++i) {
+        if (i == 0) {
+          result += string_vector[i];
+        } else {
+          result += " ";
+          result += delimiter;
+          result += string_vector[i];
+        }
+      }
+
+      return result;
+    }
+
     std::vector<std::vector<std::string>> zip(std::vector left, std::vector right) {
       std::vector zipper {};
 
@@ -81,3 +90,5 @@ namespace Utility {
     }
   } 
 }
+
+#endif

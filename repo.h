@@ -6,13 +6,23 @@ class Repo{
     Repo(std::string);
 
     // attributes
+    std::string filename;
+    std::vector<std::string> headers {
+      "id",
+      "completed",
+      "task",
+      "created_at",
+      "updated_at"
+    };
     std::vector<std::map<std::string, std::string>> store;
-    std::vector<std::string> headers const;
 
     // methods
     std::vector<std::map<std::string, std::string>> all();
     std::map<std::string, std::string> find(std::string);
+    std::string get_filename() const;
+    std::vector<std::string> get_headers() const;
     void update(std::string, std::string, std::string);
-    std::vector<std::string> get_headers();
-};
+  private:
+    void persist();
+    std::string generate_timestamp();
 #endif
