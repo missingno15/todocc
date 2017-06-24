@@ -38,10 +38,11 @@ int main(int argc, char *argv[]) {
       std::cout << "\nExiting" << std::endl;
       break;
     } else if (flag == "S"){
-      for (auto const& row : repo.all()) {
+      for (std::map<std::string, std::string> row : repo.all()) {
         std::vector<std::string> values;
-        for (auto const& pair : row) {
-          values.push_back(pair.second);
+
+        for (auto const& header : repo.get_headers()) {
+          values.push_back(row[header]);
         }
 
         std::cout << Utility::Vector::join(values, " ")  << std::endl;

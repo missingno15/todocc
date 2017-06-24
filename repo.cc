@@ -5,6 +5,7 @@
 #include <chrono>
 #include <ctime>
 #include <locale>
+#include <iostream>
 #include "repo.h"
 #include "utility.h"
 
@@ -21,15 +22,15 @@ Repo::Repo(std::string name) {
     filestream.close();
     store = {};
   } else {
-    while(filestream) {
+    while(!filestream.eof()) {
       std::string row_string;
       std::map<std::string, std::string> datum;
 
-      std::getline(filestream, row_string);
+      std::getline(filestream, row_string, '\n');
       std::vector<std::string> row = Utility::String::split(row_string, ',');
 
       std::vector<std::vector<std::string>> row_value
-        = Utility::Vector::zip(get_headers(), row);
+        = Utility::Vector::zip(headers, row);
 
       for (std::vector<std::string> teeth_chain : row_value) {
         std::string key = teeth_chain.front();
