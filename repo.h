@@ -1,7 +1,10 @@
 #ifndef REPO_H
 #define REPO_H
 
-class Repo{
+#include <vector>
+#include <map>
+
+class Repo {
   public:
     Repo(std::string);
 
@@ -18,6 +21,8 @@ class Repo{
 
     // methods
     std::vector<std::map<std::string, std::string>> all();
+    void delete_at(std::string);
+    void insert(std::map<std::string, std::string>);
     std::map<std::string, std::string> find(std::string);
     std::string get_filename() const;
     std::vector<std::string> get_headers() const;
@@ -25,4 +30,5 @@ class Repo{
   private:
     void persist();
     std::string generate_timestamp();
+};
 #endif

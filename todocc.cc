@@ -5,12 +5,12 @@
 #include "utility.h"
 
 int main(int argc, char *argv[]) {
-  if (argv[1].empty()) {
-    throw "No list argument was passed."
+  if (argc <= 1) {
+    throw "The task list name argument was not passed.";
   }
 
   std::string filename= argv[1];
-  const std::string options = "(I)nsert (S)how Update (D)elete (E)xit";
+  const std::string options = "(I)nsert (S)how (C)omplete (R)ename (D)elete (E)xit";
 
   // Initialize database
   Repo repo(filename);
@@ -32,37 +32,39 @@ int main(int argc, char *argv[]) {
     if (flag == "E"){
       std::cout << "\nExiting" << std::endl;
       break;
-    } else if (flag == "S"){ 
+    } else if (flag == "S"){
       for (auto const& row : repo.all()) {
         std::vector<std::string> values;
         for (auto const& pair : row) {
-          values.push_back(pair.first());
+          values.push_back(pair.second);
         }
 
-        std::cout << Utility::Vector::join(values, " ")  << std::endl; 
+        std::cout << Utility::Vector::join(values, " ")  << std::endl;
       }
 
       std::cout << options << std::endl;
     } else if (flag == "I") {
       std::cout << "Enter the follow values\n" << std::endl;
+      std::map<std::string, std::string> task;
 
-      std::vector<std::string> insert_values;
       for (std::string header : repo.get_headers()) {
         // Do some awkward stuff
         if (header == "id" || header == "created_at" || header == "updated_at"){
-          continue
+          task[header] = "";
         } else if (header == "completed"){
           task[header] = "FALSE";
         } else {
           std::string capture;
-          std::cout << header << ":" std::endl;
+          std::cout << header << ":" << std::endl;
           std::getline(std::cin, capture);
         }
       }
 
+      repo.insert(task);
+
       std::cout << options << std::endl;
     } else if (flag == "C") {
-      // mark as complete 
+      // mark as complete
       std::string identifier;
       std::cout << "Enter the ID of the task you want to complete" << std::endl;
       std::cin >> identifier;
@@ -72,7 +74,7 @@ int main(int argc, char *argv[]) {
 
       std::cout << options << std::endl;
     } else if (flag == "R"){
-      // rename task 
+      // rename task
       std::string identifier;
       std::string new_task_name;
 

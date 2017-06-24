@@ -9,23 +9,23 @@
 #include "utility.h"
 
 // public
-void Repo::Repo(std::string name) {
+Repo::Repo(std::string name) {
   std::fstream filestream;
   filename = name + ".csv";
 
   filestream.open(filename, std::ios::in);
 
-  if (file.fail()) {
+  if (filestream.fail()) {
     // Create file if it doesn't exist
     filestream.open(filename, std::ios::out);
     filestream.close();
     store = {};
   } else {
-    while(file) {
+    while(filestream) {
       std::string row_string;
       std::map<std::string, std::string> datum;
 
-      std::getline(file, row_string, "\n");
+      std::getline(filestream, row_string);
       std::vector<std::string> row = Utility::String::split(row_string, ',');
 
       std::vector<std::vector<std::string>> row_value
@@ -63,10 +63,10 @@ void Repo::insert(std::map<std::string, std::string> task) {
   // ids are strings even though they are represented as numbers wanted to
   // implement ids as random series of alphanumeric string but not much time
   // and don't quite get how to do it so doing it incremental index based
-  if (get_store().empty()) {
+  if (store.empty()) {
     task["id"] = "1";
   } else {
-    task["id"] = (std::itoa(get_store().last()["id"]) + 1);
+    task["id"] = (std::to_string(std::stoi(store.back()["id"]) + 1));
   }
 
   task["created_at"] = generate_timestamp();
@@ -86,9 +86,9 @@ std::vector<std::string> Repo::get_headers() const {
 
 void Repo::update(std::string identifier, std::string key, std::string new_value) {
   for (std::map<std::string, std::string> row : store) {
-    if (store["id"] == identifier) {
-      store[key] = new_value;
-      store["updated_at"] = generate_timestamp();
+    if (row["id"] == identifier) {
+      row[key] = new_value;
+      row["updated_at"] = generate_timestamp();
       break;
     }
   }
@@ -98,10 +98,10 @@ void Repo::update(std::string identifier, std::string key, std::string new_value
 
 // private
 void Repo::persist() {
-  ofstream file;
+  std::ofstream file;
   file.open(filename);
 
-  for (auto const& row : get_headers()) {
+  for (auto const& row : store) {
     std::string csv_row = Utility::Vector::join(Utility::Map::to_vector(row), " ");
     file << csv_row << std::endl;
   }
@@ -111,8 +111,9 @@ void Repo::persist() {
 
 std::string Repo::generate_timestamp() {
   char timestamp[50];
-  end = std::chrome::system_clock::now();
-  std::time_t end_time = std::chrome::system_clock::to_time_t(end);
+  std::chrono::time_point<std::chrono::system_clock> end =
+    std::chrono::system_clock::now();
+  std::time_t end_time = std::chrono::system_clock::to_time_t(end);
 
   std::strftime(
     timestamp,

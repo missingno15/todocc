@@ -1,18 +1,18 @@
+#ifndef UTILITY_H
+#define UTILITY_H
+
 #include <iostream>
 #include <string>
 #include <vector>
 #include <numeric>
 
-#ifndef UTILITY_H
-#define UTILITY_H value
-
 namespace Utility {
   namespace Map {
-    std::vector<std::string> to_vector(std::map<std::string, std::string> m) {
+    std::vector<std::string> to_vector(std::map<std::string, std::string> maphash) {
       std::vector<std::string> values;
 
       for (auto const& pair : maphash) {
-        values.push_back(pair.second());
+        values.push_back(pair.second);
       }
 
       return values;
@@ -80,16 +80,18 @@ namespace Utility {
       return result;
     }
 
-    std::vector<std::vector<std::string>> zip(std::vector left, std::vector right) {
-      std::vector zipper {};
+    std::vector<std::vector<std::string>> zip(std::vector<std::string> left, std::vector<std::string> right) {
+      std::vector<std::vector<std::string>> zipper = {};
 
       if (left.size() == right.size()) {
         for (int i = 0; i < left.size(); ++i) {
           std::vector<std::string> teeth_chain {};
           teeth_chain.push_back(left[i]);
           teeth_chain.push_back(right[i]);
-          zipper.push_back(teeth_chain)
+          zipper.push_back(teeth_chain);
         }
+
+        return zipper;
       } else {
         throw "Size of left and right vectors are not the same";
       }
