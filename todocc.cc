@@ -1,15 +1,20 @@
 #include <numeric>
 #include <iostream>
-#include <functional>
+#include <regex>
 #include "repo.h"
 #include "utility.h"
 
+bool identifier_is_valid(std::string identifier) {
+  return std::regex_match(identifier, std::regex("^[0-9]+$"));
+} 
+
 int main(int argc, char *argv[]) {
   if (argc <= 1) {
-    throw "The task list name argument was not passed.";
+    std::cout << "You need to provide a name of your list" << std::endl;
+    return 1;
   }
 
-  std::string filename= argv[1];
+  std::string filename = argv[1];
   const std::string options = "(I)nsert (S)how (C)omplete (R)ename (D)elete (E)xit";
 
   // Initialize database
@@ -50,13 +55,15 @@ int main(int argc, char *argv[]) {
       for (std::string header : repo.get_headers()) {
         // Do some awkward stuff
         if (header == "id" || header == "created_at" || header == "updated_at"){
-          task[header] = "";
+          task[header] = "nil";
         } else if (header == "completed"){
           task[header] = "FALSE";
         } else {
           std::string capture;
           std::cout << header << ":" << std::endl;
+          std::cin.ignore();
           std::getline(std::cin, capture);
+          task["task"] = capture;
         }
       }
 
@@ -66,8 +73,14 @@ int main(int argc, char *argv[]) {
     } else if (flag == "C") {
       // mark as complete
       std::string identifier;
-      std::cout << "Enter the ID of the task you want to complete" << std::endl;
-      std::cin >> identifier;
+      while(true) {
+        std::cout << "Enter the ID of the task you want to complete" << std::endl;
+        std::cin.ignore();
+        std::cin >> identifier;
+        if (identifier_is_valid(identifier)) {
+          break;
+        }
+      }
 
       repo.update(identifier, "completed", "TRUE");
       std::cout << "Updated " << identifier << std::endl;
@@ -78,8 +91,14 @@ int main(int argc, char *argv[]) {
       std::string identifier;
       std::string new_task_name;
 
-      std::cout << "Enter the ID of the task you want to rename." << std::endl;
-      std::cin >> identifier;
+      while(true) {
+        std::cout << "Enter the ID of the task you want to rename." << std::endl;
+        std::cin.ignore();
+        std::cin >> identifier;
+        if (identifier_is_valid(identifier)) {
+          break;
+        }
+      }
 
       std::cout << "Enter the new name of your task"  << std::endl;
       std::getline(std::cin, new_task_name);
@@ -91,8 +110,15 @@ int main(int argc, char *argv[]) {
     } else if (flag == "D") {
       // delete task
       std::string identifier;
-      std::cout << "Enter the ID of the task you want to delete" << std::endl;
-      std::cin >> identifier;
+
+      while(true) {
+        std::cout << "Enter the ID of the task you want to delete" << std::endl;
+        std::cin >> identifier;
+        std::cin.ignore();
+        if (identifier_is_valid(identifier)) {
+          break;
+        }
+      }
 
       repo.delete_at(identifier);
 

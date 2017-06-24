@@ -18,13 +18,13 @@ std::vector<std::string> Utility::Map::to_vector(std::map<std::string, std::stri
 std::vector<std::string> Utility::String::split(std::string str, char delimiter) {
   std::vector<std::string> fragments = {};
 
-  std::string fragment_buffer;
+  std::string fragment_buffer = "";
   for (char& c : str) {
     if (c == delimiter) {
       // Add fragment to the collection
       // and reset buffer
       fragments.push_back(fragment_buffer);
-      fragment_buffer.clear();
+      fragment_buffer = "";
     } else if (c == str.back()){
       fragment_buffer.append(1, c);
       fragments.push_back(fragment_buffer);
@@ -63,7 +63,6 @@ std::string Utility::Vector::join(std::vector<std::string> string_vector, std::s
     if (i == 0) {
       result += string_vector[i];
     } else {
-      result += " ";
       result += delimiter;
       result += string_vector[i];
     }

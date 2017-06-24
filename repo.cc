@@ -52,7 +52,9 @@ void Repo::delete_at(std::string identifier) {
   std::vector<std::map<std::string, std::string>> updated_store;
 
   for (std::map<std::string, std::string> row : store) {
-    updated_store.push_back(row);
+    if (row["id"] != identifier){
+      updated_store.push_back(row);
+    }
   }
 
   store = updated_store;
@@ -85,7 +87,7 @@ std::vector<std::string> Repo::get_headers() const {
 }
 
 void Repo::update(std::string identifier, std::string key, std::string new_value) {
-  for (std::map<std::string, std::string> row : store) {
+  for (std::map<std::string, std::string> &row : store) {
     if (row["id"] == identifier) {
       row[key] = new_value;
       row["updated_at"] = generate_timestamp();
@@ -101,8 +103,15 @@ void Repo::persist() {
   std::ofstream file;
   file.open(filename);
 
-  for (auto const& row : store) {
-    std::string csv_row = Utility::Vector::join(Utility::Map::to_vector(row), " ");
+  for (std::map<std::string, std::string> record : store) {
+    std::vector<std::string> ordered_values;
+
+    for (std::string header : headers) {
+      ordered_values.push_back(record[header]);
+    }
+
+    std::string csv_row = Utility::Vector::join(ordered_values, ",");
+
     file << csv_row << std::endl;
   }
 
