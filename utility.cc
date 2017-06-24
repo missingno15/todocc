@@ -18,18 +18,20 @@ std::vector<std::string> Utility::Map::to_vector(std::map<std::string, std::stri
 std::vector<std::string> Utility::String::split(std::string str, char delimiter) {
   std::vector<std::string> fragments = {};
 
-  std::string fragment_buffer = "";
-  for (char& c : str) {
-    if (c == delimiter) {
+  std::string fragment_buffer;
+
+  for (int i = 0; i < str.size(); ++i) {
+    if (str[i] == delimiter) {
       // Add fragment to the collection
       // and reset buffer
       fragments.push_back(fragment_buffer);
-      fragment_buffer = "";
-    } else if (c == str.back()){
-      fragment_buffer.append(1, c);
+      fragment_buffer.clear();
+    } else if (i == (str.size() - 1)){
+      // check if end of string
+      fragment_buffer.append(1, str[i]);
       fragments.push_back(fragment_buffer);
     } else {
-      fragment_buffer.append(1, c);
+      fragment_buffer.append(1, str[i]);
     }
   }
 
@@ -84,6 +86,6 @@ std::vector<std::vector<std::string>> Utility::Vector::zip(std::vector<std::stri
 
     return zipper;
   } else {
-    throw "Size of left and right vectors are not the same";
+    std::cout << "Size of left was " << left.size() << "and size of right was " << right.size() << std::endl;
   }
 }
