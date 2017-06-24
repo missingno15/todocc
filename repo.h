@@ -24,7 +24,6 @@ class Repo {
     void delete_at(std::string);
     void insert(std::map<std::string, std::string>);
     std::map<std::string, std::string> find(std::string);
-    std::string get_filename() const;
     std::vector<std::string> get_headers() const;
     void update(std::string, std::string, std::string);
   private:

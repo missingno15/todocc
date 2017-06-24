@@ -79,10 +79,6 @@ void Repo::insert(std::map<std::string, std::string> task) {
   persist();
 }
 
-std::string Repo::get_filename() const {
-  return filename;
-}
-
 std::vector<std::string> Repo::get_headers() const {
   return headers;
 }
